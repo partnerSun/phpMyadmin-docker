@@ -1,4 +1,4 @@
-FROM registry.cn-beijing.aliyuncs.com/partnersun/phpadmin:5.2.0-apache
+FROM registry.cn-beijing.aliyuncs.com/partnersun/phpadmin:5.0.2-apache
 
 WORKDIR /etc/apache2/sites-available
 
