@@ -1,17 +1,18 @@
 # phpmyAdmin/docker
-* PHP:5.6.36
-* nginx:1.10.3
-* [phpAdmin](https://files.phpmyadmin.net/phpMyAdmin/4.6.5.2/phpMyAdmin-4.6.5.2-all-languages.tar.gz.asc):4.6.5-2
+* PHP:7.4
+* Apache/2.4.38 (Debian)
+* phpMyadmin 5.0.2: docker镜像
 
-## 配置sql注入平台,使用nginx
-* nginx：参考nginx.conf
-* apache2：参考000-default.conf
-* sql注入平台sqli: https://github.com/Audi-1/sqli-labs.git
+## 配置sql注入平台
+* sql注入平台sql-lab适用于php5.x: https://github.com/Audi-1/sqli-labs.git
+* sql注入平台sql-lab适用于php7.x: https://gitcode.net/mirrors/skyblueee/sqli-labs-php7.git
+* 官方sql-lab适用于<php7.0
 
-## sqli不支持php7.0
-* 重做镜像: registry.cn-beijing.aliyuncs.com/partnersun/phpadmin:4.6.5-apache-custom, 其余参数不变.
-* php7+apache2参考: registry.cn-beijing.aliyuncs.com/partnersun/phpadmin:5.2.0-apache-custom
- 
+
+## 镜像打包
+```
+  docker build -t phpmyadmin:5.0.2-apache-custom -f ./Dockerfile-php7.0
+```
 
 ## LANMP
 
@@ -22,23 +23,26 @@ docker run --name some-mysql \
     -p 3306:3306 \
     -d mysql:5.7-debian --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 
+#root授权
+grant all on  *.* to 'root'@'%' identified by 'aaa123123'  with grant option;
+
 ```
 
-* php+phpMyadmin+nginx
+* php+phpMyadmin+apache2
 ```shell
 docker run --name phpmyadmin \
     -e PMA_HOST=mysql_ip \
     -e PMA_USER=root \
     -e PMA_PASSWORD=aaa123123 \
     -v /conf/sqli:/var/www/sqli \
-    -p 8080:80 \
-    -d registry.cn-beijing.aliyuncs.com/partnersun/phpadmin:4.6.5-apache-custom
+    -p 80:80 \
+    -d registry.cn-beijing.aliyuncs.com/partnersun/phpadmin:5.0.2-apache-custom
 
 ```
 * sqli
 ```shell
 cd /conf/sqli
-git clone https://github.com/Audi-1/sqli-labs.git
+git clone https://gitcode.net/mirrors/skyblueee/sqli-labs-php7.git
 mv ./sqli-labs/* ./
 ```
 * 修改sqli连接信息
