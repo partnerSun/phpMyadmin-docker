@@ -1,0 +1,10 @@
+FROM registry.cn-beijing.aliyuncs.com/partnersun/phpadmin:5.2.0-apache
+
+WORKDIR /etc/apache2/sites-available
+
+
+COPY ./000-default.conf .
+RUN apt update && \
+    apt install -y nano
+    
+WORKDIR /var/www
